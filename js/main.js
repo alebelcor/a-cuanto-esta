@@ -20,5 +20,6 @@ $(function () {
             });
         };
 
+    $(document.documentElement).removeClass('no-js').addClass('js');
     loadRates();
 });
