@@ -17,9 +17,34 @@
 </head>
 
 <body>
-  <h1>¿A Cuánto Está?</h1>
-  <div id="price"></div>
-  <div id="when"></div>
+  <div role="main" class="container">
+    <div class="row">
+      <noscript>
+        <span class="label label-important">Importante</span>
+        <em>Necesitas tener JavaScript disponible. Actívalo y refresca el sitio &lt;3</em>
+      </noscript>
+    </div>
+    <div class="hero-unit row">
+      <h1>¿A Cuánto Está?</h1>
+      <p>Visítanos para saber el precio del dólar, euro y libra esterlina.</p>
+      <p>La información se actualiza automáticamente cada hora.</p>
+    </div>
+    <div id="annotation" class="row">
+      <h3>Espera mientras la información se carga...</h3>
+    </div>
+    <div class="tabbable tabs-left row">
+      <ul class="nav nav-tabs js-tabs">
+        <li class="active"><a href="#usd-pane" data-toggle="tab">Dólar (USD)</a></li>
+        <li><a href="#eur-pane" data-toggle="tab">Euro (EUR)</a></li>
+        <li><a href="#gbp-pane" data-toggle="tab">Libra esterlina (GBP)</a></li>
+      </ul>
+      <div class="tab-content js-panes">
+        <div class="tab-pane active" id="usd-pane"></div>
+        <div class="tab-pane" id="eur-pane">ಠ_ಠ</div>
+        <div class="tab-pane" id="gbp-pane">ಠ_ಠ</div>
+      </div>
+    </div>
+  </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
