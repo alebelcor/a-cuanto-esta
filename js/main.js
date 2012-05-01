@@ -16,16 +16,21 @@ $(function () {
                 $('<p></p>').text('Última actualización: ' + day + ', ' + month + ' ' + timestamp.getDate()
                     + ' ' + timestamp.getFullYear() + ', ' + timestamp.toLocaleTimeString())
                     .appendTo(usdPane$);
+                $('#annotation').fadeToggle('slow');
 
-                //$('#annotation').toggleClass('invisible');
-                $('#annotation').fadeToggle();
             }).error(function () {
-                $('#annotation').find('h3')
-                    .html('<span class="label label-important">Error</span>&thinsp;'
-                        + 'Oh oh, hubo algún error. Intenta de nuevo luego.');
+                $('#annotation')
+                    .fadeToggle('slow', function () {
+                        $(this).html('<span class="label label-important">Error</span>&nbsp;'
+                        + 'Oh oh, algo no anda bien. Intenta de nuevo luego.');
+                    }).fadeIn('slow');
+                $('.tabbable').fadeToggle('slow');
             });
         };
 
     $(document.documentElement).removeClass('no-js').addClass('js');
+    $('#annotation').html('<span>Cargando información... </span>'
+        + '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando...">');
     loadRates();
+
 });
