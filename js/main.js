@@ -24,13 +24,27 @@
 				var timestamp = new Date(json.timestamp * 1000),
 					day = dayNames[timestamp.getDay()],
 					month = monthNames[timestamp.getMonth()],
-					usdPane$ = $('#usd-pane');
+					lastUpdate = 'Última actualización: ' + day + ', ' + month + ' ' + timestamp.getDate()
+						+ ' ' + timestamp.getFullYear() + ', ' + timestamp.toLocaleTimeString(),
+					usdPane$ = $('#usd-pane'),
+					eurPane$ = $('#eur-pane'),
+					gbpPane$ = $('#gbp-pane');
 
-				$('<p></p>').html('El precio del dólar es de <strong>$' + json.rates.MXN + '</strong> MXN')
-					.appendTo(usdPane$);
-				$('<p></p>').text('Última actualización: ' + day + ', ' + month + ' ' + timestamp.getDate()
-					+ ' ' + timestamp.getFullYear() + ', ' + timestamp.toLocaleTimeString())
-					.appendTo(usdPane$);
+				fx.rates = json.rates;
+				fx.base = json.base;
+
+				$('<p></p>').html('El precio del dólar es de <strong>$'
+					+ fx(1).from('USD').to('MXN').toFixed(4) + '</strong> MXN').appendTo(usdPane$);
+				$('<p></p>').text(lastUpdate).appendTo(usdPane$);
+
+				$('<p></p>').html('El precio del euro es de <strong>$'
+					+ fx(1).from('EUR').to('MXN').toFixed(4) + '</strong> MXN').appendTo(eurPane$);
+				$('<p></p>').text(lastUpdate).appendTo(eurPane$);
+
+				$('<p></p>').html('El precio de la libra esterlina es de <strong>$'
+					+ fx(1).from('GBP').to('MXN').toFixed(4) + '</strong> MXN').appendTo(gbpPane$);
+				$('<p></p>').text(lastUpdate).appendTo(gbpPane$);
+
 				annotation$.fadeToggle('slow');
 
 			}).error(function () {
@@ -47,11 +61,9 @@
 	App.publish = function () {
 		o.trigger.apply(o, arguments);
 	};
-
 	App.subscribe = function () {
 		o.on.apply(o, arguments);
 	};
-
 	App.unsubscribe = function () {
 		o.off.apply(o, arguments);
 	};
