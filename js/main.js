@@ -7,10 +7,6 @@
 
 		document = window.document,
 
-		enableJSClass = function () {
-			$(document.documentElement).removeClass('no-js').addClass('js');
-		},
-
 		loadRates = function () {
 			var dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
 				monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
@@ -71,36 +67,65 @@
 		};
 
 	// jQuery Tiny Pub/Sub
-	App.publish = function () {
-		o.trigger.apply(o, arguments);
-	};
-	App.subscribe = function () {
-		o.on.apply(o, arguments);
-	};
-	App.unsubscribe = function () {
-		o.off.apply(o, arguments);
-	};
+	App.publish = function () { o.trigger.apply(o, arguments); };
+	App.subscribe = function () { o.on.apply(o, arguments); };
+	App.unsubscribe = function () { o.off.apply(o, arguments); };
 
-	// **************
-	// Subscriptions
-	// **************
-	App.subscribe("init", function () {
-		enableJSClass();
+	// Subscriptions/events
+	App.subscribe('enable-js-class', function () {
+		$(document.documentElement).removeClass('no-js').addClass('js');
+	});
+
+	App.subscribe('create-share-buttons', function () {
+		var shareBar$ = $('.share-bar'),
+			appendScript = function (url, id) {
+				if (id !== undefined && document.getElementById(id) !== null) {
+					return;
+				}
+				$('<script>').prop('src', url).prop('id', id).insertBefore('script:first');
+			};
+
+		// create a twitter button
+		shareBar$.append('<div class="span1">'
+			+ '<a href="https://twitter.com/share"'
+				+ ' class="twitter-share-button"'
+				+ ' data-url="http://alebelcor.github.com/a-cuanto-esta"'
+				+ ' data-text="¿Quieres saber a cuánto está el dólar/euro/libra esterlina?"'
+				+ ' data-via="alebelcor"'
+				+ ' data-count="vertical">Tweet</a></div>');
+		appendScript('//platform.twitter.com/widgets.js', 'twitter-wjs');
+
+		// create a facebook button
+		shareBar$.append('<div class="span1">'
+			+ '<iframe src="//www.facebook.com/plugins/like.php?'
+				+ 'href=http%3A%2F%2Falebelcor.github.com%2Fa-cuanto-esta'
+				+ '&send=false'
+				+ '&layout=box_count'
+				+ '&width=450'
+				+ '&show_faces=false'
+				+ '&action=like'
+				+ '&colorscheme=light'
+				+ '&font&height=62"'
+				+ ' scrolling="no" frameborder="0" style="border:none; overflow:hidden;'
+				+ ' width:450px; height:62px;" allowTransparency="true"></iframe></div>');
+
+		// create a google+ button
+		shareBar$.append('<div class="span1">'
+			+ '<div class="g-plusone"'
+				+ ' data-size="tall"'
+				+ ' data-href="http://alebelcor.github.com/a-cuanto-esta"></div></div>');
+		appendScript('//apis.google.com/js/plusone.js', '');
+
+	});
+
+	App.subscribe('init', function () {
+		App.publish('enable-js-class');
+		App.publish('create-share-buttons');
 		loadRates();
 	});
 
-	// *******
-	// Events
-	// *******
-
-	// DOM Ready
 	$(function ($) {
-		App.publish("init");
+		App.publish('init');
 	});
-
-	// Window unload
-	//$(window).unload(function () {
-	//	App.publish("destroy");
-	//});
 
 }(jQuery, window));
