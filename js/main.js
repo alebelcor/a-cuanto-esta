@@ -101,13 +101,11 @@
 				+ 'href=http%3A%2F%2Falebelcor.github.com%2Fa-cuanto-esta'
 				+ '&send=false'
 				+ '&layout=box_count'
-				+ '&width=450'
 				+ '&show_faces=false'
-				+ '&action=like'
 				+ '&colorscheme=light'
-				+ '&font&height=62"'
+				+ '&width=450&height=62"'
 				+ ' scrolling="no" frameborder="0" style="border:none; overflow:hidden;'
-				+ ' width:450px; height:62px;" allowTransparency="true"></iframe></div>');
+				+ ' height:62px;" allowTransparency="true"></iframe></div>');
 
 		// create a google+ button
 		shareBar$.append('<div class="span1">'
