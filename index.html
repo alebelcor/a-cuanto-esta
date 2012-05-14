@@ -18,33 +18,37 @@
 </head>
 
 <body>
-	<div role="main" class="container">
-		<div class="hero-unit row">
+	<div class="container">
+		<header class="hero-unit row">
 			<h1>¿A Cuánto Está?</h1>
 			<p>Visítanos para saber el precio del dólar, euro y libra esterlina.</p>
 			<p>La información se actualiza automáticamente cada hora.</p>
-		</div>
-		<div id="annotation" class="row">
-			<noscript>
-				<span class="label label-important">Importante</span>
-				<em>Necesitas tener JavaScript disponible. Actívalo y refresca el sitio &lt;3</em>
-			</noscript>
-		</div>
-		<div class="row share-bar"></div>
-		<div class="tabbable tabs-left row">
-			<ul class="nav nav-tabs js-tabs">
-				<li class="active"><a href="#usd-pane" data-toggle="tab">Dólar (USD)</a></li>
-				<li><a href="#eur-pane" data-toggle="tab">Euro (EUR)</a></li>
-				<li><a href="#gbp-pane" data-toggle="tab">Libra esterlina (GBP)</a></li>
-			</ul>
-			<div class="tab-content js-panes">
-				<div class="tab-pane active" id="usd-pane"></div>
-				<div class="tab-pane" id="eur-pane"></div>
-				<div class="tab-pane" id="gbp-pane"></div>
+		</header>
+		<div role="main">
+			<div id="annotation" class="row">
+				<noscript>
+					<span class="label label-important">Importante</span>
+					<em>Necesitas tener JavaScript disponible. Actívalo y refresca el sitio &lt;3</em>
+				</noscript>
+			</div>
+			<div class="row share-bar"></div>
+			<div class="row tabbable tabs-left">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#usd-pane" data-toggle="tab">Dólar (USD)</a></li>
+					<li><a href="#eur-pane" data-toggle="tab">Euro (EUR)</a></li>
+					<li><a href="#gbp-pane" data-toggle="tab">Libra esterlina (GBP)</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="usd-pane"></div>
+					<div class="tab-pane" id="eur-pane"></div>
+					<div class="tab-pane" id="gbp-pane"></div>
+				</div>
 			</div>
 		</div>
+		<footer class="row footer">
+			<p>Hecho por <a href="//twitter.com/alebelcor">@alebelcor</a></p>
+		</footer>
 	</div>
-	<!--<div id="fb-root"></div>-->
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
