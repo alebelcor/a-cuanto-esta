@@ -17,7 +17,7 @@
 				+ '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando...">');
 
 			$.ajax({
-				url: 'http://openexchangerates.org/latest.json',
+				url: '//openexchangerates.org/latest.json',
 				dataType: 'json',
 				cache: false,
 				success: function (json) {
