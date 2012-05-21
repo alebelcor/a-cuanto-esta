@@ -2,6 +2,7 @@
 	'use strict';
 
 	var document = window.document,
+		templates = window.templates,
 		// jQuery Tiny Pub/Sub
 		o = $({}),
 		App = {
@@ -29,7 +30,7 @@
 			+ '<a href="https://twitter.com/share"'
 				+ ' class="twitter-share-button"'
 				+ ' data-url="http://alebelcor.github.com/a-cuanto-esta"'
-				+ ' data-text="¿Quieres saber a cuánto está el dólar/euro/libra esterlina?"'
+				+ ' data-text="¿Quieres saber el tipo de cambio de las monedas más comunes?"'
 				+ ' data-via="alebelcor"'
 				+ ' data-count="vertical">Tweet</a></div>');
 		appendScript('//platform.twitter.com/widgets.js', 'twitter-wjs');
@@ -69,10 +70,10 @@
 			dataType: 'json',
 			cache: false,
 			success: function (json) {
-				var usdPane$ = $('#usd-pane'),
-					eurPane$ = $('#eur-pane'),
-					gbpPane$ = $('#gbp-pane'),
+				var dataRowTmpl = templates['data-row'],
 
+					dataTable$ = $('#js-data-table'),
+					lastUpdate$ = $('#js-last-update'),
 					timestamp = new Date(json.timestamp * 1000),
 
 					day = dayNames[timestamp.getDay()],
@@ -89,20 +90,29 @@
 				fx.rates = json.rates;
 				fx.base = json.base;
 
-				$('<p>').html('El precio del dólar es de <strong>$'
-					+ fx(1).from('USD').to('MXN').toFixed(4) + '</strong> MXN').appendTo(usdPane$);
-				$('<p>').text(lastUpdate).appendTo(usdPane$);
+				dataTable$.append(dataRowTmpl.render({
+					currencyFrom: 'USD',
+					currencyTo: 'MXN',
+					exchangeRate: fx(1).from('USD').to('MXN').toFixed(4)
+				}));
 
-				$('<p>').html('El precio del euro es de <strong>$'
-					+ fx(1).from('EUR').to('MXN').toFixed(4) + '</strong> MXN').appendTo(eurPane$);
-				$('<p>').text(lastUpdate).appendTo(eurPane$);
+				dataTable$.append(dataRowTmpl.render({
+					currencyFrom: 'EUR',
+					currencyTo: 'MXN',
+					exchangeRate: fx(1).from('EUR').to('MXN').toFixed(4)
+				}));
 
-				$('<p>').html('El precio de la libra esterlina es de <strong>$'
-					+ fx(1).from('GBP').to('MXN').toFixed(4) + '</strong> MXN').appendTo(gbpPane$);
-				$('<p>').text(lastUpdate).appendTo(gbpPane$);
+				dataTable$.append(dataRowTmpl.render({
+					currencyFrom: 'GBP',
+					currencyTo: 'MXN',
+					exchangeRate: fx(1).from('GBP').to('MXN').toFixed(4)
+				}));
 
 				annotation$.fadeToggle('slow');
-
+				dataTable$.fadeIn('slow').removeClass('hidden');
+				lastUpdate$.fadeToggle('slow', function () {
+					$(this).text(lastUpdate);
+				}).fadeIn('slow');
 			},
 			error: function () {
 				annotation$.fadeToggle('slow', function () {
