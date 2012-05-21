@@ -89,17 +89,17 @@
 				fx.rates = json.rates;
 				fx.base = json.base;
 
-				$('<p></p>').html('El precio del dólar es de <strong>$'
+				$('<p>').html('El precio del dólar es de <strong>$'
 					+ fx(1).from('USD').to('MXN').toFixed(4) + '</strong> MXN').appendTo(usdPane$);
-				$('<p></p>').text(lastUpdate).appendTo(usdPane$);
+				$('<p>').text(lastUpdate).appendTo(usdPane$);
 
-				$('<p></p>').html('El precio del euro es de <strong>$'
+				$('<p>').html('El precio del euro es de <strong>$'
 					+ fx(1).from('EUR').to('MXN').toFixed(4) + '</strong> MXN').appendTo(eurPane$);
-				$('<p></p>').text(lastUpdate).appendTo(eurPane$);
+				$('<p>').text(lastUpdate).appendTo(eurPane$);
 
-				$('<p></p>').html('El precio de la libra esterlina es de <strong>$'
+				$('<p>').html('El precio de la libra esterlina es de <strong>$'
 					+ fx(1).from('GBP').to('MXN').toFixed(4) + '</strong> MXN').appendTo(gbpPane$);
-				$('<p></p>').text(lastUpdate).appendTo(gbpPane$);
+				$('<p>').text(lastUpdate).appendTo(gbpPane$);
 
 				annotation$.fadeToggle('slow');
 
