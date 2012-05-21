@@ -59,7 +59,7 @@
 		var dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
 			monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
 				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			annotation$ = $('#annotation');
+			annotation$ = $('#js-annotation');
 
 		annotation$.html('<span>Cargando información... </span>'
 			+ '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando...">');
