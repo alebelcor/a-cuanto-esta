@@ -56,7 +56,7 @@
 	});
 
 	App.subscribe('load-exchange-rates', function () {
-		var dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+		var dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
 			monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
 				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 			annotation$ = $('#js-annotation');
