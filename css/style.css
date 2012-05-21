@@ -7,8 +7,8 @@
 
 .annotation { margin-bottom: 30px; }
 .js .share-bar { margin-bottom: 20px; }
-.footer { margin-top: 20px; padding: 25px 0 25px 0; border-top: 1px solid #E5E5E5; text-align: right; }
-
+.footer { margin-top: 20px; padding: 25px 0 25px 0; border-top: 1px solid #E5E5E5; }
+.footer, .last-update { text-align: right; }
 
 
 /* ==|== non-semantic helper classes ========================================
