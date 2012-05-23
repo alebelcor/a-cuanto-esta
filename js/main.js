@@ -79,7 +79,7 @@
 					day = dayNames[timestamp.getDay()],
 					month = monthNames[timestamp.getMonth()],
 					hours = timestamp.getHours(),
-					hoursTranslated = hours > 12 ?
+					hoursTranslated = hours >= 12 ?
 							(hours === 12 ? '12 PM' : (hours - 12) + ' PM') :
 							(hours === 0 ? '12 AM' : hours + ' AM'),
 
