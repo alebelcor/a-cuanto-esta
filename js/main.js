@@ -1,4 +1,4 @@
-;(function ($, window, undefined) {
+(function ($, window, undefined) {
 	'use strict';
 
 	var document = window.document,
@@ -57,8 +57,7 @@
 	});
 
 	App.subscribe('load-exchange-rates', function () {
-		var dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-			monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+		var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
 				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 			annotation$ = $('#js-annotation');
 
@@ -67,25 +66,24 @@
 
 		$.ajax({
 			url: '//openexchangerates.org/latest.json',
-			dataType: 'json',
+			dataType: 'jsonp',
 			cache: false,
 			success: function (json) {
 				var dataRowTmpl = templates['data-row'],
+					lastUpdateTmpl = templates['last-update'],
 
 					dataTable$ = $('#js-data-table'),
 					lastUpdate$ = $('#js-last-update'),
 					timestamp = new Date(json.timestamp * 1000),
 
-					day = dayNames[timestamp.getDay()],
 					month = monthNames[timestamp.getMonth()],
 					hours = timestamp.getHours(),
 					hoursTranslated = hours >= 12 ?
 							(hours === 12 ? '12 PM' : (hours - 12) + ' PM') :
 							(hours === 0 ? '12 AM' : hours + ' AM'),
 
-					lastUpdate = 'Última actualización: ' + day + ', ' + month + ' '
-						+ timestamp.getDate() + ' ' + timestamp.getFullYear() + ', '
-						+ hoursTranslated;
+					lastUpdate = hoursTranslated + ' - ' + month + ' ' + timestamp.getDate()
+						+ ' ' + timestamp.getFullYear();
 
 				fx.rates = json.rates;
 				fx.base = json.base;
@@ -111,10 +109,14 @@
 				annotation$.fadeToggle('slow');
 				dataTable$.fadeIn('slow').removeClass('hidden');
 				lastUpdate$.fadeToggle('slow', function () {
-					$(this).text(lastUpdate);
+					$(this).append(lastUpdateTmpl.render({
+						machineReadable: timestamp.toISOString(),
+						humanReadable: lastUpdate
+					}));
 				}).fadeIn('slow');
 			},
 			error: function () {
+				$(document.documentElement).addClass('error');
 				annotation$.fadeToggle('slow', function () {
 					$(this).html('<span class="label label-important">Error</span>&nbsp;'
 						+ '<em>Oh oh, algo no anda bien. Intenta de nuevo luego.</em>');
@@ -130,7 +132,7 @@
 		App.publish('load-exchange-rates');
 	});
 
-	$(function ($) {
+	$(function () {
 		App.publish('init');
 	});
 
