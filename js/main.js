@@ -29,6 +29,7 @@
 		shareBar$.append('<div class="span1">'
 			+ '<a href="https://twitter.com/share"'
 				+ ' class="twitter-share-button"'
+				+ ' data-lang="en"'
 				+ ' data-url="http://alebelcor.github.com/a-cuanto-esta"'
 				+ ' data-text="¿Quieres saber el tipo de cambio de las monedas más comunes?"'
 				+ ' data-via="alebelcor"'
