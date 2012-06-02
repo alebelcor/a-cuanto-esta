@@ -62,8 +62,8 @@
 				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 			annotation$ = $('#js-annotation');
 
-		annotation$.html('<span>Cargando información... </span>'
-			+ '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando...">');
+		annotation$.html('<div class="span3"><span>Cargando información... </span>'
+			+ '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando..."></div>');
 
 		$.ajax({
 			url: '//openexchangerates.org/latest.json',
