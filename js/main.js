@@ -62,8 +62,8 @@
 				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 			annotation$ = $('#js-annotation');
 
-		annotation$.html('<div class="span3"><span>Cargando información... </span>'
-			+ '<img src="img/loader.gif" alt="ícono de cargador" title="Cargando..."></div>');
+		annotation$.html('<div class="span3"><span>Cargando... </span>'
+			+ '<img src="img/loader.gif" alt="ícono de carga rotatorio" title="Cargando..."></div>');
 
 		$.ajax({
 			url: '//openexchangerates.org/latest.json',
@@ -119,8 +119,8 @@
 			error: function () {
 				$(document.documentElement).addClass('error');
 				annotation$.fadeToggle('slow', function () {
-					$(this).html('<span class="label label-important">Error</span>&nbsp;'
-						+ '<em>Oh oh, algo no anda bien. Intenta de nuevo luego.</em>');
+					$(this).html('<div class="span5"><span class="label label-important">Error</span>'
+						+ '<em> Oh oh, algo no anda bien. Intenta de nuevo luego.</em></div>');
 				}).fadeIn('slow');
 				$('.tabbable').fadeToggle('slow');
 			}
