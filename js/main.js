@@ -2,14 +2,16 @@
 	'use strict';
 
 	var document = window.document,
+		fx = window.fx,
+		moment = window.moment,
 		templates = window.templates,
-		annotation$ = $('#js-annotation'),
+
 		// jQuery Tiny Pub/Sub
 		o = $({}),
 		App = {
-			publish: function () { o.trigger.apply(o, arguments); },
-			subscribe: function () { o.on.apply(o, arguments); },
-			unsubscribe: function () { o.off.apply(o, arguments); }
+			publish : function () { o.trigger.apply(o, arguments); },
+			subscribe : function () { o.on.apply(o, arguments); },
+			unsubscribe : function () { o.off.apply(o, arguments); }
 		};
 
 	// Subscriptions/events
@@ -63,20 +65,39 @@
 	});
 
 	App.subscribe('show-annotation-message', function (e, msg) {
-		var message = msg || '<div class="span3"><span>Cargando... </span>'
-			+ '<img src="img/loader.gif" alt="ícono de carga rotatorio" title="Cargando..."></div>';
+		var annotation$ = $('#js-annotation'),
+			message = msg || '<div class="span3"><span>Cargando... </span>'
+				+ '<img src="img/loader.gif" alt="ícono de carga rotatorio"'
+				+ ' title="Cargando..."></div>';
 
 		annotation$.promise('fx').done(function () {
 			$(this).html(message).fadeIn('slow');
-		})
+		});
 	});
 
 	App.subscribe('hide-annotation-message', function () {
+		var annotation$ = $('#js-annotation');
+
 		annotation$.promise('fx').done(function () {
 			$(this).fadeToggle('slow', function () {
 				$(this).empty();
 			});
 		});
+	});
+
+	App.subscribe('error-loading-rates', function () {
+		$(document.documentElement).addClass('error');
+
+		App.publish('hide-annotation-message');
+		App.publish('show-annotation-message', '<div class="span5">'
+			+ '<span class="label label-important">Error</span>'
+			+ '<em> Oh oh, algo no anda bien. Intenta de nuevo luego.</em></div>');
+	});
+
+	App.subscribe('append-data-to-main', function (e, data) {
+		var dataTable$ = $('#js-data-table');
+
+		dataTable$.append(data);
 	});
 
 	App.subscribe('load-exchange-rates', function () {
@@ -91,26 +112,25 @@
 				var dataRowTmpl = templates['data-row'],
 					lastUpdateTmpl = templates['last-update'],
 
-					dataTable$ = $('#js-data-table'),
 					lastUpdate$ = $('#js-last-update'),
 					timestamp = moment.unix(json.timestamp);
 
 				fx.rates = json.rates;
 				fx.base = json.base;
 
-				dataTable$.append(dataRowTmpl.render({
+				App.publish('append-data-to-main', dataRowTmpl.render({
 					currencyFrom: 'USD',
 					currencyTo: 'MXN',
 					exchangeRate: fx(1).from('USD').to('MXN').toFixed(4)
 				}));
 
-				dataTable$.append(dataRowTmpl.render({
+				App.publish('append-data-to-main', dataRowTmpl.render({
 					currencyFrom: 'EUR',
 					currencyTo: 'MXN',
 					exchangeRate: fx(1).from('EUR').to('MXN').toFixed(4)
 				}));
 
-				dataTable$.append(dataRowTmpl.render({
+				App.publish('append-data-to-main', dataRowTmpl.render({
 					currencyFrom: 'GBP',
 					currencyTo: 'MXN',
 					exchangeRate: fx(1).from('GBP').to('MXN').toFixed(4)
@@ -118,7 +138,7 @@
 
 				App.publish('hide-annotation-message');
 
-				dataTable$.fadeIn('slow').removeClass('hidden');
+				$('#js-data-table').fadeIn('slow').removeClass('hidden');
 				lastUpdate$.fadeToggle('slow', function () {
 					$(this).append(lastUpdateTmpl.render({
 						machineReadable: timestamp.format(),
@@ -127,12 +147,7 @@
 				}).fadeIn('slow');
 			},
 			error: function () {
-				$(document.documentElement).addClass('error');
-				App.publish('hide-annotation-message');
-				App.publish('show-annotation-message', '<div class="span5">'
-					+ '<span class="label label-important">Error</span>'
-					+ '<em> Oh oh, algo no anda bien. Intenta de nuevo luego.</em></div>');
-				$('.tabbable').fadeToggle('slow');
+				App.publish('error-loading-rates');
 			}
 		});
 	});
