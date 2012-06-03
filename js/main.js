@@ -3,6 +3,7 @@
 
 	var document = window.document,
 		templates = window.templates,
+		annotation$ = $('#js-annotation'),
 		// jQuery Tiny Pub/Sub
 		o = $({}),
 		App = {
@@ -59,14 +60,28 @@
 				+ ' data-size="tall"'
 				+ ' data-href="http://alebelcor.github.com/a-cuanto-esta"></div></div>');
 		appendScript('//apis.google.com/js/plusone.js', '');
+	});
 
+	App.subscribe('show-annotation-message', function (e, msg) {
+		var message = msg || '<div class="span3"><span>Cargando... </span>'
+			+ '<img src="img/loader.gif" alt="ícono de carga rotatorio" title="Cargando..."></div>';
+
+		annotation$.promise('fx').done(function () {
+			$(this).html(message).fadeIn('slow');
+		})
+	});
+
+	App.subscribe('hide-annotation-message', function () {
+		annotation$.promise('fx').done(function () {
+			$(this).fadeToggle('slow', function () {
+				$(this).empty();
+			});
+		});
 	});
 
 	App.subscribe('load-exchange-rates', function () {
-		var annotation$ = $('#js-annotation');
 
-		annotation$.html('<div class="span3"><span>Cargando... </span>'
-			+ '<img src="img/loader.gif" alt="ícono de carga rotatorio" title="Cargando..."></div>');
+		App.publish('show-annotation-message');
 
 		$.ajax({
 			url: '//openexchangerates.org/latest.json',
@@ -101,7 +116,8 @@
 					exchangeRate: fx(1).from('GBP').to('MXN').toFixed(4)
 				}));
 
-				annotation$.fadeToggle('slow');
+				App.publish('hide-annotation-message');
+
 				dataTable$.fadeIn('slow').removeClass('hidden');
 				lastUpdate$.fadeToggle('slow', function () {
 					$(this).append(lastUpdateTmpl.render({
@@ -112,10 +128,10 @@
 			},
 			error: function () {
 				$(document.documentElement).addClass('error');
-				annotation$.fadeToggle('slow', function () {
-					$(this).html('<div class="span5"><span class="label label-important">Error</span>'
-						+ '<em> Oh oh, algo no anda bien. Intenta de nuevo luego.</em></div>');
-				}).fadeIn('slow');
+				App.publish('hide-annotation-message');
+				App.publish('show-annotation-message', '<div class="span5">'
+					+ '<span class="label label-important">Error</span>'
+					+ '<em> Oh oh, algo no anda bien. Intenta de nuevo luego.</em></div>');
 				$('.tabbable').fadeToggle('slow');
 			}
 		});
