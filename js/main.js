@@ -12,6 +12,11 @@
 		};
 
 	// Subscriptions/events
+	App.subscribe('config', function () {
+		moment.months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+			'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+	});
+
 	App.subscribe('enable-js-class', function () {
 		$(document.documentElement).removeClass('no-js').addClass('js');
 	});
@@ -58,9 +63,7 @@
 	});
 
 	App.subscribe('load-exchange-rates', function () {
-		var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
-				'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-			annotation$ = $('#js-annotation');
+		var annotation$ = $('#js-annotation');
 
 		annotation$.html('<div class="span3"><span>Cargando... </span>'
 			+ '<img src="img/loader.gif" alt="ícono de carga rotatorio" title="Cargando..."></div>');
@@ -75,16 +78,7 @@
 
 					dataTable$ = $('#js-data-table'),
 					lastUpdate$ = $('#js-last-update'),
-					timestamp = new Date(json.timestamp * 1000),
-
-					month = monthNames[timestamp.getMonth()],
-					hours = timestamp.getHours(),
-					hoursTranslated = hours >= 12 ?
-							(hours === 12 ? '12 PM' : (hours - 12) + ' PM') :
-							(hours === 0 ? '12 AM' : hours + ' AM'),
-
-					lastUpdate = hoursTranslated + ' - ' + month + ' ' + timestamp.getDate()
-						+ ' ' + timestamp.getFullYear();
+					timestamp = moment.unix(json.timestamp);
 
 				fx.rates = json.rates;
 				fx.base = json.base;
@@ -111,8 +105,8 @@
 				dataTable$.fadeIn('slow').removeClass('hidden');
 				lastUpdate$.fadeToggle('slow', function () {
 					$(this).append(lastUpdateTmpl.render({
-						machineReadable: timestamp.toISOString(),
-						humanReadable: lastUpdate
+						machineReadable: timestamp.format(),
+						humanReadable: timestamp.format('h A - MMMM D YYYY')
 					}));
 				}).fadeIn('slow');
 			},
@@ -128,6 +122,7 @@
 	});
 
 	App.subscribe('init', function () {
+		App.publish('config');
 		App.publish('enable-js-class');
 		App.publish('create-share-buttons');
 		App.publish('load-exchange-rates');
