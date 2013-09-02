@@ -1,1 +1,1 @@
-[Clic aquí](http://alebelcor.github.com/a-cuanto-esta)
+[Clic aquí](http://alebelcor.github.io/a-cuanto-esta)
